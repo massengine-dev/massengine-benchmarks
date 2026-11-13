@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+vdbbench-venv/
+VectorDBBench/
+datasets/
+.DS_Store
+*.pem
+*.license
+*.token
+*.secret
