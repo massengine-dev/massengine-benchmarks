@@ -49,6 +49,25 @@ class BenchmarkIntegrityTests(unittest.TestCase):
             self.assertEqual(data["ingestion"]["total_replicated_vectors"], 288_274_622)
             self.assertGreater(data["ingestion"]["effective_docs_per_sec"], 100_000)
 
+    def test_es_os_faiss_10m_driver_and_results(self) -> None:
+        py_files = list((ROOT / "es-opensearch-10m").glob("*.py"))
+        self.assertEqual(len(py_files), 3)
+        for path in py_files:
+            compile(path.read_text(encoding="utf-8"), path.name, "exec")
+
+        res_dir = ROOT / "results" / "cohere-10m-es-os-faiss"
+        json_files = sorted(res_dir.glob("*.json"))
+        self.assertEqual(len(json_files), 11, "expected 11 EC2 head-to-head JSON reports")
+        for fp in json_files:
+            data = json.loads(fp.read_text(encoding="utf-8"))
+            self.assertEqual(data["total_records"], 10_000_000)
+            self.assertEqual(data["dim"], 768)
+            self.assertIn("ingest", data)
+            self.assertIn("search_post_ingest", data)
+            self.assertIn("search_post_optimize", data)
+            self.assertIn("streaming_read_write", data)
+            self.assertGreater(data["streaming_read_write"]["achieved_writes_per_sec"], 950.0)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,10 +1,34 @@
 # MassEngine Reproducible Benchmarks (`massengine-benchmarks`)
 
-Reproducible benchmark plugins, automated runner scripts, and unmodified raw JSON telemetry for [MassEngine](https://massengine.com) (`v0.9.19`).
+Reproducible benchmark plugins, automated runner scripts, and unmodified raw JSON telemetry for [MassEngine](https://massengine.com) (`v0.9.21`).
 
 - **Interactive Live 20M Wikipedia Demo (Zero Signup)**: [https://massengine.com/demo](https://massengine.com/demo)
+- **ES 9.5.6 & OpenSearch 3.9 FAISS (`Cohere-10M`) 3-Way Report**: [https://massengine.com/benchmarks-es-faiss](https://massengine.com/benchmarks-es-faiss)
 - **Full Cohere-10M & 144.1M AWS EC2 Report**: [https://massengine.com/benchmarks-144m](https://massengine.com/benchmarks-144m)
-- **OpenSearch 3.9 (`Lucene 10.5.1`) Head-to-Head Report**: [https://massengine.com/benchmarks](https://massengine.com/benchmarks)
+- **OpenSearch 3.9 (`Lucene 10.5.1`) Selectivity Study**: [https://massengine.com/benchmarks](https://massengine.com/benchmarks)
+
+---
+
+## 0. AWS EC2 3-Way Head-to-Head (`Cohere-10M`: MassEngine `v0.9.21` vs. Elasticsearch `9.5.6` vs. OpenSearch `3.9.0` + FAISS)
+
+11 dedicated single-node AWS EC2 evaluations (`c6id.4xlarge` `16c/32g` and `m6id.4xlarge` `16c/64g`, driven from `c6id.8xlarge` `32c/64g`) across all 7 official Zilliz `Cohere-10M` (`10,000,000 × 768-d`) exact ground-truth sets:
+
+| Tier & Configuration | Build + Optimize (`1` seg/shard) | Process RSS | NVMe Disk | Live Write `p99` (`1K/s`) | Live `1%` Filtered QPS (`p95`) |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **`16c32g` MassEngine `v0.9.21` (NVMe)** | **`3.5 min`** (`48,292/s`) | **`1.43 GiB`** | **`11.78 GiB`** | **`38.1 ms`** | **`3,653.3 QPS` (`6.97 ms`)** |
+| **`16c32g` MassEngine `v0.9.21` (In-Mem)** | **`3.4 min`** (`49,047/s`) | `12.57 GiB` | **`11.78 GiB`** | **`34.2 ms`** | **`3,748.9 QPS` (`6.67 ms`)** |
+| `16c32g` ES `9.5.6` (`bbq_hnsw`) | `31.2 min` (`5,346/s`) | `11.35 GiB` | `30.58 GiB` | `88.4 ms` | `629.9 QPS` (`39.17 ms`) |
+| `16c32g` ES `9.5.6` (`int8_hnsw`) | `52.3 min` (`3,189/s`) | `17.40 GiB` | `36.75 GiB` | `106.1 ms` | `867.4 QPS` (`29.97 ms`) |
+| `16c32g` OS `3.9.0` (`faiss_on_disk` `32x`) | `50.0 min` (`3,336/s`) | `29.05 GiB` | `31.44 GiB` | `272.6 ms` | `162.2 QPS` (`147.48 ms`) |
+| `16c32g` OS `3.9.0` (`faiss_fp16`, `mem_opt`) | `64.6 min` (`2,578/s`) | `12.93 GiB` | `44.70 GiB` | `225.7 ms` | `9.8 QPS` (`2,051.81 ms`) |
+| **`16c64g` MassEngine `v0.9.21` (In-Mem)** | **`3.4 min`** (`48,799/s`) | `12.54 GiB` | **`11.78 GiB`** | **`37.3 ms`** | **`3,764.1 QPS` (`6.68 ms`)** |
+| `16c64g` ES `9.5.6` (`bbq_hnsw`) | `32.5 min` (`5,127/s`) | `19.89 GiB` | `30.58 GiB` | `91.5 ms` | `570.3 QPS` (`42.42 ms`) |
+| `16c64g` ES `9.5.6` (`int8_hnsw`) | `48.8 min` (`3,416/s`) | `26.21 GiB` | `36.75 GiB` | `99.9 ms` | `840.0 QPS` (`30.21 ms`) |
+| `16c64g` OS `3.9.0` (`faiss_on_disk` `32x`) | `39.5 min` (`4,214/s`) | `48.41 GiB` | `31.44 GiB` | `277.7 ms` | `162.2 QPS` (`150.55 ms`) |
+| `16c64g` OS `3.9.0` (`faiss_fp16`, Full In-RAM) | `67.2 min` (`2,480/s`) | `38.96 GiB` | `44.70 GiB` | `262.4 ms` | `933.1 QPS` (`34.60 ms`) |
+
+- Reproducible 4-phase driver & dataset stager: [`es-opensearch-10m/`](./es-opensearch-10m/)
+- All 11 raw JSON telemetry files & auto-generated summary tables: [`results/cohere-10m-es-os-faiss/`](./results/cohere-10m-es-os-faiss/) ([`SUMMARY.md`](./results/cohere-10m-es-os-faiss/SUMMARY.md))
 
 ---
 
