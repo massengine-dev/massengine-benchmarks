@@ -36,10 +36,10 @@ Reproducible benchmark plugins, automated runner scripts, and unmodified raw JSO
 
 Executed with unmodified upstream [`zilliztech/VectorDBBench`](https://github.com/zilliztech/VectorDBBench) (`install_massengine_plugin.py` verifies via `git status --porcelain` that zero upstream runner, dataset, or metric files are modified) against a single 16-vCPU AWS EC2 node (`8` local shards, `RF=1`, `us-east-1`):
 
-- **In-Memory (`16c64g`)**: `1 × m6id.4xlarge` (`16 vCPUs`, `64 GiB RAM`, local NVMe)
-- **Direct NVMe Mode (`16c32g`)**: `1 × c6id.4xlarge` (`16 vCPUs`, `32 GiB RAM` — **half the RAM**, `--nvme-mode`)
+- **Full-RAM Node (`16c64g`)**: `1 × m6id.4xlarge` (`16 vCPUs`, `64 GiB RAM`, local NVMe)
+- **Lean-RAM Node (`16c32g`)**: `1 × c6id.4xlarge` (`16 vCPUs`, `32 GiB RAM` — **half the RAM**, unified adaptive storage)
 
-| Official `VectorDBBench` Case | `16c64g` In-Memory (`m6id.4xlarge`) | `16c32g` Direct NVMe (`c6id.4xlarge`) | Serial Latency (`p99` / `p95`) | `Recall@100` | 10M Load + Index Time |
+| Official `VectorDBBench` Case | `16c64g` Full-RAM (`m6id.4xlarge`) | `16c32g` Lean-RAM (`c6id.4xlarge`) | Serial Latency (`p99` / `p95`) | `Recall@100` | 10M Load + Index Time |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **`Performance768D10M`** (Unfiltered) | **`378.6 QPS`** | **`403.7 QPS`** | `5.20 ms` / `4.80 ms` (NVMe)<br>`6.30 ms` / `5.80 ms` (RAM) | `0.9837` (NVMe)<br>`0.9840` (RAM) | **`645.7s` (`10.8m` RAM)**<br>**`646.8s` (`10.8m` NVMe)** |
 | **`Performance768D10M1P`** (Int Filter 1% • 99% Match) | **`292.3 QPS`** | **`309.4 QPS`** | `6.20 ms` / `5.90 ms` (NVMe)<br>`7.10 ms` / `6.70 ms` (RAM) | `0.9839` (NVMe)<br>`0.9842` (RAM) | Reused 10M index |
@@ -76,10 +76,10 @@ MassEngine includes a **1-Core Free Forever** tier (`≤ 1M` vectors) out of the
 git clone https://github.com/massengine-dev/massengine-benchmarks.git
 cd massengine-benchmarks
 
-# Set NVME_MODE=true for c6id.4xlarge (32 GiB RAM) or NVME_MODE=false for m6id.4xlarge (64 GiB RAM)
+# Identical flags run on both 64 GiB m6id.4xlarge and 32 GiB c6id.4xlarge
+# (MassEngine auto-adapts RAM/NVMe residency and GOMEMLIMIT to host RAM)
 MASSENGINE_LICENSE_KEY="meli_your_eval_key" \
 MASSENGINE_API_KEY="change-me-bench-token" \
-NVME_MODE=true \
 DATA_DIR=/mnt/nvme/massengine \
 ./vectordbbench/install_server_node.sh
 ```

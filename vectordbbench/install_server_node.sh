@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # Downloads SHA-256-verified MassEngine release binaries onto a Linux benchmark host
-# and starts a single-node 8-shard data node + HTTP gateway via systemd (In-Memory or Direct NVMe Mode).
+# and starts a single-node 8-shard data node + HTTP gateway via systemd
+# (unified adaptive RAM/NVMe storage; massengine-node auto-sizes GOMEMLIMIT
+# to 35% of host RAM unless NODE_GOMEM is explicitly overridden).
 #
 # Usage:
 #   MASSENGINE_LICENSE_KEY="meli_..." \
 #   MASSENGINE_API_KEY="bench-token-change-me" \
-#   NVME_MODE=true \
 #   DATA_DIR=/mnt/nvme/massengine \
 #   ./vectordbbench/install_server_node.sh
 
 set -euo pipefail
 
 VERSION="${MASSENGINE_VERSION:-v0.11.3}"
-NVME_MODE="${NVME_MODE:-false}"
 DATA_DIR="${DATA_DIR:-/var/lib/massengine}"
 INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"
 LISTEN_ADDR="${LISTEN_ADDR:-0.0.0.0:8080}"
@@ -71,16 +71,17 @@ if [[ -n "${MASSENGINE_LICENSE_KEY:-}" ]]; then
   LICENSE_ARG="--license-key /etc/massengine/bench.license"
 fi
 
-if [[ "${NVME_MODE}" == "true" ]]; then
-  EXTRA_ARGS="--nvme-mode --flush-threshold 250000"
-  NODE_GOMEM="${NODE_GOMEM:-21GiB}"
-  SRV_GOMEM="${SRV_GOMEM:-4GiB}"
-  GOGC_VAL="40"
-else
-  EXTRA_ARGS="--release-vectors=true --cold-meta=true --flush-threshold 250000"
-  NODE_GOMEM="${NODE_GOMEM:-48GiB}"
-  SRV_GOMEM="${SRV_GOMEM:-6GiB}"
-  GOGC_VAL="50"
+EXTRA_ARGS="--flush-threshold 250000"
+NODE_GOMEM="${NODE_GOMEM:-}"
+SRV_GOMEM="${SRV_GOMEM:-}"
+GOGC_VAL="${GOGC_VAL:-50}"
+NODE_MEM_LINE=""
+SRV_MEM_LINE=""
+if [[ -n "${NODE_GOMEM}" ]]; then
+  NODE_MEM_LINE="Environment=\"GOMEMLIMIT=${NODE_GOMEM}\""
+fi
+if [[ -n "${SRV_GOMEM}" ]]; then
+  SRV_MEM_LINE="Environment=\"GOMEMLIMIT=${SRV_GOMEM}\""
 fi
 
 sudo tee /etc/systemd/system/massengine-node.service >/dev/null <<SVC
@@ -91,7 +92,7 @@ After=network.target
 [Service]
 Type=simple
 LimitNOFILE=1048576
-Environment="GOMEMLIMIT=${NODE_GOMEM}"
+${NODE_MEM_LINE}
 Environment="GOGC=${GOGC_VAL}"
 ExecStart=${INSTALL_DIR}/massengine-node --addr ${NODE_RPC_ADDR} --root ${DATA_DIR}/node-0 --node 0 --nodes 1 --shards ${SHARDS} --rf ${RF} --dim ${DIM} --cells 0 --max-segments 8 ${EXTRA_ARGS} --auth-file /etc/massengine/node_auth.secret ${LICENSE_ARG}
 Restart=no
@@ -109,7 +110,7 @@ Requires=massengine-node.service
 [Service]
 Type=simple
 LimitNOFILE=1048576
-Environment="GOMEMLIMIT=${SRV_GOMEM}"
+${SRV_MEM_LINE}
 Environment="GOGC=${GOGC_VAL}"
 ExecStart=${INSTALL_DIR}/massengine-server --listen ${LISTEN_ADDR} --root ${DATA_DIR}/gw --node-addrs ${NODE_RPC_ADDR} --nodes 1 --shards ${SHARDS} --rf ${RF} --dim ${DIM} --node-auth-file /etc/massengine/node_auth.secret --client-auth-file /etc/massengine/client_auth.token ${LICENSE_ARG}
 Restart=no
@@ -126,7 +127,7 @@ sudo systemctl restart massengine-server
 PORT="${LISTEN_ADDR##*:}"
 for _ in $(seq 1 30); do
   if curl -fsS "http://127.0.0.1:${PORT}/v1/health" >/dev/null 2>&1; then
-    echo "OK: MassEngine (${VERSION}) is healthy at http://${LISTEN_ADDR} (nvme_mode=${NVME_MODE})."
+    echo "OK: MassEngine (${VERSION}) is healthy at http://${LISTEN_ADDR} (unified adaptive storage)."
     curl -fsS "http://127.0.0.1:${PORT}/v1/health" && echo ""
     exit 0
   fi
