@@ -14,7 +14,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORK_DIR="${WORK_DIR:-$(pwd)/.vdbbench-work}"
 MASSENGINE_URL="${MASSENGINE_URL:-http://127.0.0.1:8080}"
 DB_LABEL="${DB_LABEL:-massengine-16c}"
-DB_VERSION="${DB_VERSION:-v0.9.19}"
+DB_VERSION="${DB_VERSION:-v0.11.3}"
 NUM_SHARDS="${NUM_SHARDS:-8}"
 RF="${RF:-1}"
 

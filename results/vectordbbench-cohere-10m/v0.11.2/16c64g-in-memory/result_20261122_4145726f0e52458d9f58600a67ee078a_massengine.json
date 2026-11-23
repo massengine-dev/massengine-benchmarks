@@ -1,0 +1,228 @@
+{
+  "run_id": "4145726f0e52458d9f58600a67ee078a",
+  "task_label": "4145726f0e52458d9f58600a67ee078a",
+  "results": [
+    {
+      "metrics": {
+        "max_load_count": 0,
+        "insert_duration": 100.00145726399933,
+        "optimize_duration": 0.9071109239994257,
+        "load_duration": 0.0,
+        "qps": 0.0,
+        "serial_latency_p99": 0.0,
+        "serial_latency_p95": 0.0,
+        "serial_latency_p50": 0.0,
+        "recall": 0.0,
+        "recall_min": null,
+        "recall_p1": null,
+        "recall_p5": null,
+        "recall_p10": null,
+        "recall_at": {},
+        "ndcg": 0.0,
+        "mrr": 0.0,
+        "conc_num_list": [],
+        "conc_qps_list": [],
+        "conc_latency_p99_list": [],
+        "conc_latency_p95_list": [],
+        "conc_latency_p50_list": [],
+        "conc_latency_avg_list": [],
+        "payload_profile": "ids_only",
+        "payload_estimated_bytes_per_query": 0,
+        "inserted_count": 0,
+        "insert_rows_per_second": 0.0,
+        "insert_completion_seconds": 0.0,
+        "searchable_after_insert_seconds": 0.0,
+        "indexed_after_searchable_seconds": 0.0,
+        "additional_parameters": {},
+        "st_ideal_insert_duration": 100,
+        "st_search_stage_list": [
+          50,
+          80,
+          100,
+          110
+        ],
+        "st_search_time_list": [
+          51.0795,
+          81.0785,
+          101.1239,
+          183.7837
+        ],
+        "st_max_qps_list_list": [
+          0,
+          0,
+          1679.0169,
+          5214.4926
+        ],
+        "st_recall_list": [
+          0.5353,
+          0.8234,
+          0.9852,
+          0.9839
+        ],
+        "st_recall_min_list": [
+          0.39,
+          0.69,
+          0.9,
+          0.88
+        ],
+        "st_recall_p1_list": [
+          0.42,
+          0.73,
+          0.95,
+          0.94
+        ],
+        "st_recall_p5_list": [
+          0.45,
+          0.76,
+          0.97,
+          0.96
+        ],
+        "st_recall_p10_list": [
+          0.47,
+          0.77,
+          0.97,
+          0.97
+        ],
+        "st_ndcg_list": [
+          0.5354,
+          0.8241,
+          0.9887,
+          0.9877
+        ],
+        "st_serial_latency_p99_list": [
+          0.0049,
+          0.014,
+          0.0025,
+          0.0014
+        ],
+        "st_serial_latency_p95_list": [
+          0.0042,
+          0.0058,
+          0.0023,
+          0.0013
+        ],
+        "st_conc_failed_rate_list": [
+          0,
+          0,
+          0.0,
+          0.0
+        ],
+        "st_conc_num_list_list": [
+          [],
+          [],
+          [
+            5,
+            10
+          ],
+          [
+            5,
+            10
+          ]
+        ],
+        "st_conc_qps_list_list": [
+          [],
+          [],
+          [
+            1517.8206,
+            1679.0169
+          ],
+          [
+            3782.6806,
+            5214.4926
+          ]
+        ],
+        "st_conc_latency_p99_list_list": [
+          [],
+          [],
+          [
+            0.005179,
+            0.010631
+          ],
+          [
+            0.002253,
+            0.003481
+          ]
+        ],
+        "st_conc_latency_p95_list_list": [
+          [],
+          [],
+          [
+            0.004391,
+            0.008951
+          ],
+          [
+            0.001781,
+            0.002827
+          ]
+        ],
+        "st_conc_latency_avg_list_list": [
+          [],
+          [],
+          [
+            0.003284308630599798,
+            0.0059429875862616
+          ],
+          [
+            0.001313724799957747,
+            0.0019089440886306314
+          ]
+        ]
+      },
+      "task_config": {
+        "db": "MassEngine",
+        "db_config": {
+          "db_label": "16c64g-in-memory-m6id.4xlarge",
+          "version": "v0.11.2",
+          "note": "",
+          "url": "**********",
+          "api_key": "**********",
+          "tenant": "vdbbench"
+        },
+        "db_case_config": {
+          "metric_type": "COSINE",
+          "num_shards": 8,
+          "rf": 1,
+          "data_type": "int8",
+          "nprobe": 28,
+          "rerank_pool": 320
+        },
+        "case_config": {
+          "case_id": 200,
+          "custom_case": {
+            "insert_rate": 1000
+          },
+          "payload_profile": null,
+          "k": 100,
+          "nq": 1,
+          "concurrency_search_config": {
+            "num_concurrency": [
+              1,
+              5,
+              10,
+              20,
+              30,
+              40,
+              60,
+              80
+            ],
+            "concurrency_duration": 30,
+            "concurrency_timeout": 3600,
+            "serial_cooldown": 0.0
+          }
+        },
+        "stages": [
+          "drop_old",
+          "load",
+          "search_serial",
+          "search_concurrent"
+        ],
+        "load_concurrency": 0,
+        "insert_batch_size": 500
+      },
+      "label": ":)",
+      "dataset_metadata": null
+    }
+  ],
+  "file_fmt": "result_{}_{}_{}.json",
+  "timestamp": 1795305600.0
+}

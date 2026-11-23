@@ -1,0 +1,171 @@
+{
+  "run_id": "c307683d3c8f42b59b5e741a0262adab",
+  "task_label": "c307683d3c8f42b59b5e741a0262adab",
+  "results": [
+    {
+      "metrics": {
+        "max_load_count": 0,
+        "insert_duration": 0.0,
+        "optimize_duration": 0.0,
+        "load_duration": 0.0,
+        "qps": 292.2959,
+        "serial_latency_p99": 0.0071,
+        "serial_latency_p95": 0.0067,
+        "serial_latency_p50": 0.0056,
+        "recall": 0.9842,
+        "recall_min": 0.91,
+        "recall_p1": 0.95,
+        "recall_p5": 0.97,
+        "recall_p10": 0.97,
+        "recall_at": {
+          "100": 0.9842
+        },
+        "ndcg": 0.9884,
+        "mrr": 0.0,
+        "conc_num_list": [
+          1,
+          5,
+          10,
+          20,
+          30,
+          40,
+          60,
+          80
+        ],
+        "conc_qps_list": [
+          193.1043,
+          283.27,
+          292.2959,
+          283.63,
+          289.323,
+          285.9903,
+          269.0141,
+          281.0485
+        ],
+        "conc_latency_p99_list": [
+          0.006908280729917351,
+          0.027010412289869234,
+          0.06347525321982175,
+          0.16701279047994833,
+          0.17382600674994592,
+          0.21029983224014812,
+          0.3342768430199612,
+          0.4265419673998166
+        ],
+        "conc_latency_p95_list": [
+          0.0063292404000549135,
+          0.023400014299795657,
+          0.05265786410013788,
+          0.12509139559988397,
+          0.154722414699836,
+          0.18790665219999028,
+          0.2940605397001946,
+          0.371051735500032
+        ],
+        "conc_latency_p50_list": [
+          0.005141915499962124,
+          0.01733916800026236,
+          0.032777555999928154,
+          0.06355298000016774,
+          0.09869620699987536,
+          0.13533283299989307,
+          0.22065557900032218,
+          0.2841733820000627
+        ],
+        "conc_latency_avg_list": [
+          0.005177025899554596,
+          0.017646136560576092,
+          0.03419790139783514,
+          0.07045926828581807,
+          0.10356824205964399,
+          0.13963360350626972,
+          0.22242517280822607,
+          0.2835721196246036
+        ],
+        "payload_profile": "ids_only",
+        "payload_estimated_bytes_per_query": 2000,
+        "inserted_count": 0,
+        "insert_rows_per_second": 0.0,
+        "insert_completion_seconds": 0.0,
+        "searchable_after_insert_seconds": 0.0,
+        "indexed_after_searchable_seconds": 0.0,
+        "additional_parameters": {
+          "ground_truth": {
+            "file": "neighbors_head_1p.parquet",
+            "query_count": 1000,
+            "width": 9867
+          }
+        },
+        "st_ideal_insert_duration": 0,
+        "st_search_stage_list": [],
+        "st_search_time_list": [],
+        "st_max_qps_list_list": [],
+        "st_recall_list": [],
+        "st_recall_min_list": [],
+        "st_recall_p1_list": [],
+        "st_recall_p5_list": [],
+        "st_recall_p10_list": [],
+        "st_ndcg_list": [],
+        "st_serial_latency_p99_list": [],
+        "st_serial_latency_p95_list": [],
+        "st_conc_failed_rate_list": [],
+        "st_conc_num_list_list": [],
+        "st_conc_qps_list_list": [],
+        "st_conc_latency_p99_list_list": [],
+        "st_conc_latency_p95_list_list": [],
+        "st_conc_latency_avg_list_list": []
+      },
+      "task_config": {
+        "db": "MassEngine",
+        "db_config": {
+          "db_label": "16c64g-in-memory-m6id.4xlarge",
+          "version": "v0.11.2",
+          "note": "",
+          "url": "**********",
+          "api_key": "**********",
+          "tenant": "vdbbench"
+        },
+        "db_case_config": {
+          "metric_type": "COSINE",
+          "num_shards": 8,
+          "rf": 1,
+          "data_type": "int8",
+          "nprobe": 60,
+          "rerank_pool": 384
+        },
+        "case_config": {
+          "case_id": 6,
+          "custom_case": {},
+          "payload_profile": "ids_only",
+          "k": 100,
+          "nq": 1,
+          "concurrency_search_config": {
+            "num_concurrency": [
+              1,
+              5,
+              10,
+              20,
+              30,
+              40,
+              60,
+              80
+            ],
+            "concurrency_duration": 30,
+            "concurrency_timeout": 3600,
+            "serial_cooldown": 0.0
+          }
+        },
+        "stages": [
+          "search_serial",
+          "search_concurrent"
+        ],
+        "load_concurrency": 0,
+        "insert_batch_size": 100
+      },
+      "label": ":)",
+      "dataset_metadata": null
+    }
+  ],
+  "file_fmt": "result_{}_{}_{}.json",
+  "timestamp": 1795305600.0
+}

@@ -11,7 +11,7 @@
 
 set -euo pipefail
 
-VERSION="${MASSENGINE_VERSION:-v0.9.19}"
+VERSION="${MASSENGINE_VERSION:-v0.11.3}"
 NVME_MODE="${NVME_MODE:-false}"
 DATA_DIR="${DATA_DIR:-/var/lib/massengine}"
 INSTALL_DIR="${INSTALL_DIR:-/usr/local/bin}"

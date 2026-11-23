@@ -1,0 +1,178 @@
+{
+  "run_id": "5af4ffa9109549fba26f68524ada156d",
+  "task_label": "5af4ffa9109549fba26f68524ada156d",
+  "results": [
+    {
+      "metrics": {
+        "max_load_count": 0,
+        "insert_duration": 561.067,
+        "optimize_duration": 102.8225,
+        "load_duration": 663.8894,
+        "qps": 3790.154,
+        "serial_latency_p99": 0.0015,
+        "serial_latency_p95": 0.0014,
+        "serial_latency_p50": 0.0013,
+        "recall": 0.9712,
+        "recall_min": 0.71,
+        "recall_p1": 0.89,
+        "recall_p5": 0.92,
+        "recall_p10": 0.94,
+        "recall_at": {
+          "100": 0.9712
+        },
+        "ndcg": 0.9764,
+        "mrr": 0.0,
+        "conc_num_list": [
+          1,
+          5,
+          10,
+          20,
+          30,
+          40,
+          60,
+          80
+        ],
+        "conc_qps_list": [
+          766.1191,
+          2415.4186,
+          2934.2117,
+          3395.4862,
+          3790.154,
+          3704.6181,
+          3721.988,
+          3682.0961
+        ],
+        "conc_latency_p99_list": [
+          0.0016564982800082355,
+          0.003195513160171687,
+          0.0059318691297585244,
+          0.01177196492018993,
+          0.017145835200053625,
+          0.026345417199854643,
+          0.045309028999781724,
+          0.06760130340058822
+        ],
+        "conc_latency_p95_list": [
+          0.0014846339999166956,
+          0.0027556949998142955,
+          0.004928998549939933,
+          0.009511570400081836,
+          0.013835894300245854,
+          0.02053442700002961,
+          0.03430790450011045,
+          0.049513986149668184
+        ],
+        "conc_latency_p50_list": [
+          0.0012869530000898521,
+          0.00203874699991502,
+          0.003357154500008619,
+          0.005579122000199277,
+          0.007309016999897722,
+          0.009741222000229754,
+          0.013942804000180331,
+          0.01827821650022088
+        ],
+        "conc_latency_avg_list": [
+          0.0013039744507807533,
+          0.0020677900790697008,
+          0.0034046381649754437,
+          0.005884208184225041,
+          0.00790544933594314,
+          0.010783152598593661,
+          0.016097249115970567,
+          0.02169183344287065
+        ],
+        "payload_profile": "ids_only",
+        "payload_estimated_bytes_per_query": 2000,
+        "inserted_count": 10000000,
+        "insert_rows_per_second": 0.0,
+        "insert_completion_seconds": 0.0,
+        "searchable_after_insert_seconds": 0.0,
+        "indexed_after_searchable_seconds": 0.0,
+        "additional_parameters": {
+          "insert_batch_size": 4096,
+          "load_concurrency": 16,
+          "ground_truth": {
+            "file": "neighbors_labels_label_1p.parquet",
+            "query_count": 1000,
+            "width": 1000
+          }
+        },
+        "st_ideal_insert_duration": 0,
+        "st_search_stage_list": [],
+        "st_search_time_list": [],
+        "st_max_qps_list_list": [],
+        "st_recall_list": [],
+        "st_recall_min_list": [],
+        "st_recall_p1_list": [],
+        "st_recall_p5_list": [],
+        "st_recall_p10_list": [],
+        "st_ndcg_list": [],
+        "st_serial_latency_p99_list": [],
+        "st_serial_latency_p95_list": [],
+        "st_conc_failed_rate_list": [],
+        "st_conc_num_list_list": [],
+        "st_conc_qps_list_list": [],
+        "st_conc_latency_p99_list_list": [],
+        "st_conc_latency_p95_list_list": [],
+        "st_conc_latency_avg_list_list": []
+      },
+      "task_config": {
+        "db": "MassEngine",
+        "db_config": {
+          "db_label": "16c64g-in-memory-m6id.4xlarge",
+          "version": "v0.11.2",
+          "note": "",
+          "url": "**********",
+          "api_key": "**********",
+          "tenant": "vdbbench"
+        },
+        "db_case_config": {
+          "metric_type": "COSINE",
+          "num_shards": 8,
+          "rf": 1,
+          "data_type": "int8",
+          "nprobe": 60,
+          "rerank_pool": 384
+        },
+        "case_config": {
+          "case_id": 300,
+          "custom_case": {
+            "dataset_with_size_type": "Large Cohere (768dim, 10M)",
+            "label_percentage": 0.01
+          },
+          "payload_profile": "ids_only",
+          "k": 100,
+          "nq": 1,
+          "concurrency_search_config": {
+            "num_concurrency": [
+              1,
+              5,
+              10,
+              20,
+              30,
+              40,
+              60,
+              80
+            ],
+            "concurrency_duration": 30,
+            "concurrency_timeout": 3600,
+            "serial_cooldown": 0.0
+          }
+        },
+        "stages": [
+          "drop_old",
+          "load",
+          "search_serial",
+          "search_concurrent"
+        ],
+        "load_concurrency": 16,
+        "insert_batch_size": 4096
+      },
+      "label": ":)",
+      "dataset_metadata": null
+    }
+  ],
+  "file_fmt": "result_{}_{}_{}.json",
+  "timestamp": 1795305600.0
+}

@@ -375,6 +375,7 @@ with open("/proc/meminfo") as f:
             mem[parts[0].rstrip(":")] = int(parts[1]) * 1024
 
 proc_rss = 0
+proc_rss_anon = 0
 for pid in os.listdir("/proc"):
     if not pid.isdigit():
         continue
@@ -384,7 +385,8 @@ for pid in os.listdir("/proc"):
             for l in open(f"/proc/{pid}/status"):
                 if l.startswith("VmRSS:"):
                     proc_rss += int(l.split()[1]) * 1024
-                    break
+                elif l.startswith("RssAnon:"):
+                    proc_rss_anon += int(l.split()[1]) * 1024
     except Exception:
         pass
 
@@ -403,6 +405,7 @@ print(json.dumps({
     "mem_used_bytes": mem.get("MemTotal", 0) - mem.get("MemAvailable", 0),
     "page_cache_bytes": mem.get("Cached", 0),
     "proc_rss_bytes": proc_rss,
+    "proc_rss_anon_bytes": proc_rss_anon,
     "nvme_data_bytes": disk_bytes,
     "me_seg_files": seg_files,
 }))

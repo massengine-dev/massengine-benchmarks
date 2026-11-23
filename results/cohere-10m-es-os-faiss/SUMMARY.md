@@ -6,13 +6,13 @@
 |---|---:|---:|---:|---:|---:|---:|
 | `16c32g_c6id.4xlarge_es_9.5.6_bbq_hnsw` | 1321.2s (22.0m) | 549.5s (9.2m) | **31.2 min** (5,346 docs/s) | 11.35 GiB | 12.64 GiB | 30.58 GiB |
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | 1425.0s (23.8m) | 1711.2s (28.5m) | **52.3 min** (3,189 docs/s) | 17.40 GiB | 8.06 GiB | 36.75 GiB |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | 93.5s (1.6m) | 110.4s (1.8m) | **3.4 min** (49,047 docs/s) | 12.57 GiB | 10.85 GiB | 11.78 GiB |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | 87.3s (1.5m) | 119.7s (2.0m) | **3.5 min** (48,292 docs/s) | 1.43 GiB | 11.97 GiB | 11.78 GiB |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | 101.8s (1.7m) | 24.8s (0.4m) | **2.1 min** (79,032 docs/s) | 1.72 GiB heap (12.55 GiB mapped) | 12.10 GiB | 11.92 GiB |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | 107.9s (1.8m) | 13.1s (0.2m) | **2.0 min** (82,690 docs/s) | 1.53 GiB heap (12.36 GiB mapped) | 11.77 GiB | 11.85 GiB |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | 1905.7s (31.8m) | 1973.1s (32.9m) | **64.6 min** (2,578 docs/s) | 12.93 GiB | 5.78 GiB | 44.70 GiB |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_on_disk` | 1405.2s (23.4m) | 1592.7s (26.5m) | **50.0 min** (3,336 docs/s) | 29.05 GiB | 17.73 GiB | 31.44 GiB |
 | `16c64g_m6id.4xlarge_es_9.5.6_bbq_hnsw` | 1331.8s (22.2m) | 618.6s (10.3m) | **32.5 min** (5,127 docs/s) | 19.89 GiB | 30.99 GiB | 30.58 GiB |
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | 1609.3s (26.8m) | 1318.0s (22.0m) | **48.8 min** (3,416 docs/s) | 26.21 GiB | 23.80 GiB | 36.75 GiB |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | 89.7s (1.5m) | 115.2s (1.9m) | **3.4 min** (48,799 docs/s) | 12.54 GiB | 12.81 GiB | 11.78 GiB |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | 116.5s (1.9m) | 37.9s (0.6m) | **2.6 min** (64,764 docs/s) | 1.72 GiB heap (12.55 GiB mapped) | 12.15 GiB | 11.90 GiB |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | 2137.0s (35.6m) | 1895.2s (31.6m) | **67.2 min** (2,480 docs/s) | 38.96 GiB | 21.34 GiB | 44.70 GiB |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_on_disk` | 1226.2s (20.4m) | 1146.8s (19.1m) | **39.5 min** (4,214 docs/s) | 48.41 GiB | 31.88 GiB | 31.44 GiB |
 
@@ -34,20 +34,20 @@
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `label_1p` (1%) | 0.7554 | 23.99 / 45.48 | 111.5 | **113.1** |
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `label_0_1p` (0.1%) | 0.9222 | 17.51 / 26.21 | 208.0 | **209.8** |
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `int_range_1p` (1% (range)) | 0.7458 | 24.16 / 43.91 | 119.9 | **113.4** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `unfiltered_100p` (100%) | 0.9824 | 3.28 / 4.26 | 526.2 | **527.1** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_50p` (50%) | 0.9818 | 2.37 / 2.92 | 857.2 | **861.3** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_10p` (10%) | 0.9716 | 1.44 / 1.60 | 2,072.7 | **2,077.8** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_5p` (5%) | 0.9712 | 1.28 / 1.37 | 2,667.1 | **2,680.8** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_1p` (1%) | 0.9596 | 1.12 / 1.19 | 3,688.1 | **3,770.1** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_0_1p` (0.1%) | 0.9776 | 1.49 / 1.60 | 2,183.9 | **2,194.2** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `int_range_1p` (1% (range)) | 0.9596 | 2.02 / 4.88 | 376.0 | **376.2** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `unfiltered_100p` (100%) | 0.9822 | 9.10 / 18.93 | 456.5 | **464.3** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_50p` (50%) | 0.9842 | 3.87 / 4.86 | 760.0 | **762.7** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_10p` (10%) | 0.9748 | 2.37 / 3.75 | 1,886.8 | **1,889.7** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_5p` (5%) | 0.9726 | 1.71 / 3.03 | 2,448.7 | **2,473.6** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_1p` (1%) | 0.9656 | 1.24 / 1.83 | 3,327.2 | **3,490.6** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_0_1p` (0.1%) | 0.9762 | 1.57 / 1.75 | 2,089.2 | **2,095.2** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `int_range_1p` (1% (range)) | 0.9608 | 2.76 / 5.45 | 327.5 | **326.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `unfiltered_100p` (100%) | 0.9822 | 6.26 / 24.80 | 392.3 | **539.2** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_50p` (50%) | 0.9814 | 2.32 / 4.71 | 508.7 | **899.7** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_10p` (10%) | 0.9714 | 3.08 / 37.28 | 1,573.5 | **2,133.3** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_5p` (5%) | 0.9664 | 1.19 / 27.30 | 2,519.1 | **3,260.5** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_1p` (1%) | 0.9436 | 0.96 / 1.08 | 5,945.8 | **6,677.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_0_1p` (0.1%) | 0.9780 | 1.83 / 2.06 | 2,079.3 | **2,105.6** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `int_range_1p` (1% (range)) | 0.9438 | 1.24 / 1.38 | 2,915.0 | **2,960.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `unfiltered_100p` (100%) | 0.9838 | 4.78 / 43.87 | 414.3 | **522.2** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_50p` (50%) | 0.9818 | 2.25 / 2.90 | 605.7 | **806.5** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_10p` (10%) | 0.9688 | 1.31 / 3.43 | 1,266.2 | **1,843.6** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_5p` (5%) | 0.9642 | 1.43 / 27.98 | 1,906.9 | **2,821.9** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_1p` (1%) | 0.9426 | 1.00 / 1.18 | 5,797.0 | **8,036.4** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_0_1p` (0.1%) | 0.9778 | 1.44 / 1.87 | 2,499.7 | **2,548.9** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `int_range_1p` (1% (range)) | 0.9358 | 1.11 / 1.23 | 3,179.6 | **3,373.8** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `unfiltered_100p` (100%) | 0.8900 | 453.01 / 1162.92 | 8.0 | **8.2** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `label_50p` (50%) | 0.9327 | 440.42 / 860.59 | 4.2 | **3.7** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `label_10p` (10%) | 0.9700 | 1650.91 / 2370.12 | 0.0 | **0.0** |
@@ -76,13 +76,13 @@
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `label_1p` (1%) | 0.7620 | 25.97 / 91.87 | 69.1 | **67.6** |
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `label_0_1p` (0.1%) | 0.9226 | 24.96 / 49.00 | 117.2 | **116.6** |
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `int_range_1p` (1% (range)) | 0.7518 | 24.97 / 86.00 | 68.4 | **73.1** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `unfiltered_100p` (100%) | 0.9836 | 3.74 / 4.75 | 462.9 | **479.2** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_50p` (50%) | 0.9824 | 2.59 / 3.14 | 764.7 | **756.9** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_10p` (10%) | 0.9760 | 1.52 / 1.68 | 1,903.2 | **1,905.9** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_5p` (5%) | 0.9748 | 1.32 / 1.47 | 2,424.2 | **2,481.6** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_1p` (1%) | 0.9624 | 1.14 / 1.22 | 3,509.6 | **3,634.8** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_0_1p` (0.1%) | 0.9758 | 1.56 / 1.79 | 2,143.7 | **2,168.5** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `int_range_1p` (1% (range)) | 0.9632 | 2.18 / 4.89 | 356.8 | **355.9** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `unfiltered_100p` (100%) | 0.9814 | 3.79 / 6.74 | 385.8 | **439.6** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_50p` (50%) | 0.9798 | 2.85 / 5.55 | 568.1 | **647.6** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_10p` (10%) | 0.9676 | 1.52 / 1.73 | 1,185.8 | **1,836.9** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_5p` (5%) | 0.9648 | 1.45 / 28.09 | 2,202.1 | **2,234.6** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_1p` (1%) | 0.9446 | 1.15 / 1.57 | 4,331.9 | **4,769.0** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_0_1p` (0.1%) | 0.9780 | 2.21 / 2.80 | 1,795.3 | **1,806.7** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `int_range_1p` (1% (range)) | 0.9434 | 1.45 / 1.59 | 2,133.3 | **2,130.3** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `unfiltered_100p` (100%) | 0.9471 | 83.48 / 109.90 | 51.4 | **49.5** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `label_50p` (50%) | 0.9587 | 229.39 / 333.08 | 24.6 | **27.0** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `label_10p` (10%) | 0.9620 | 163.39 / 211.78 | 35.7 | **37.5** |
@@ -116,20 +116,20 @@
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `label_1p` (1%) | 0.5876 | 2.82 / 4.90 | 1,408.9 | **1,435.9** |
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `label_0_1p` (0.1%) | 0.9234 | 1.47 / 1.71 | 3,794.9 | **4,009.8** |
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `int_range_1p` (1% (range)) | 0.5688 | 2.86 / 5.23 | 1,362.1 | **1,340.9** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `unfiltered_100p` (100%) | 0.9790 | 2.16 / 2.72 | 972.3 | **975.6** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_50p` (50%) | 0.9768 | 1.72 / 2.07 | 1,519.3 | **1,522.5** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_10p` (10%) | 0.9624 | 1.15 / 1.26 | 3,547.0 | **3,788.2** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_5p` (5%) | 0.9584 | 1.03 / 1.13 | 4,462.6 | **5,074.8** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_1p` (1%) | 0.9304 | 0.88 / 0.96 | 6,440.6 | **7,238.1** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_0_1p` (0.1%) | 0.9774 | 1.42 / 1.54 | 2,505.6 | **2,535.6** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `int_range_1p` (1% (range)) | 0.9388 | 1.28 / 1.41 | 1,040.8 | **1,046.0** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `unfiltered_100p` (100%) | 0.9790 | 2.33 / 2.95 | 914.0 | **921.1** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_50p` (50%) | 0.9768 | 1.78 / 2.17 | 1,454.5 | **1,477.3** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_10p` (10%) | 0.9624 | 1.15 / 1.32 | 3,343.8 | **3,687.8** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_5p` (5%) | 0.9584 | 1.03 / 1.15 | 4,308.5 | **4,991.8** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_1p` (1%) | 0.9304 | 0.90 / 1.02 | 6,161.8 | **7,120.2** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_0_1p` (0.1%) | 0.9774 | 1.42 / 1.56 | 2,487.2 | **2,563.7** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `int_range_1p` (1% (range)) | 0.9388 | 1.28 / 1.45 | 1,049.2 | **1,053.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `unfiltered_100p` (100%) | 0.9780 | 1.99 / 2.44 | 1,011.0 | **1,016.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_50p` (50%) | 0.9780 | 1.56 / 1.86 | 1,568.6 | **1,576.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_10p` (10%) | 0.9648 | 1.03 / 1.14 | 4,114.6 | **4,522.1** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_5p` (5%) | 0.9634 | 0.94 / 1.04 | 5,286.9 | **5,959.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_1p` (1%) | 0.9426 | 0.80 / 0.88 | 7,459.4 | **8,253.6** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_0_1p` (0.1%) | 0.9772 | 1.47 / 1.90 | 2,598.7 | **2,645.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `int_range_1p` (1% (range)) | 0.9436 | 1.09 / 1.20 | 3,274.7 | **3,450.0** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `unfiltered_100p` (100%) | 0.9796 | 1.92 / 2.41 | 1,027.9 | **1,041.2** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_50p` (50%) | 0.9782 | 1.52 / 1.82 | 1,604.0 | **1,603.0** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_10p` (10%) | 0.9632 | 1.02 / 1.14 | 3,974.4 | **4,511.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_5p` (5%) | 0.9588 | 0.91 / 1.03 | 5,143.1 | **5,892.6** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_1p` (1%) | 0.9394 | 0.78 / 0.88 | 7,094.8 | **8,074.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_0_1p` (0.1%) | 0.9778 | 1.44 / 1.68 | 2,549.8 | **2,595.9** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `int_range_1p` (1% (range)) | 0.9360 | 1.08 / 1.20 | 3,204.5 | **3,424.3** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `unfiltered_100p` (100%) | 0.8605 | 123.59 / 207.94 | 1,478.3 | **2,700.4** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `label_50p` (50%) | 0.8956 | 30.58 / 42.97 | 178.2 | **179.6** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `label_10p` (10%) | 0.9130 | 103.38 / 174.46 | 78.8 | **119.4** |
@@ -158,13 +158,13 @@
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `label_1p` (1%) | 0.5716 | 3.01 / 5.70 | 1,263.0 | **1,267.3** |
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `label_0_1p` (0.1%) | 0.9238 | 1.56 / 1.94 | 3,509.2 | **3,848.8** |
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `int_range_1p` (1% (range)) | 0.5720 | 3.03 / 5.55 | 1,290.2 | **1,294.0** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `unfiltered_100p` (100%) | 0.9790 | 2.21 / 2.80 | 953.2 | **954.7** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_50p` (50%) | 0.9768 | 1.74 / 2.07 | 1,479.7 | **1,499.1** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_10p` (10%) | 0.9624 | 1.14 / 1.27 | 3,520.5 | **3,746.0** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_5p` (5%) | 0.9584 | 1.00 / 1.11 | 4,418.7 | **5,016.8** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_1p` (1%) | 0.9304 | 0.86 / 0.94 | 6,364.8 | **7,221.1** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_0_1p` (0.1%) | 0.9774 | 1.46 / 1.69 | 2,479.1 | **2,518.5** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `int_range_1p` (1% (range)) | 0.9388 | 1.28 / 1.44 | 1,006.8 | **1,005.7** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `unfiltered_100p` (100%) | 0.9760 | 2.44 / 3.07 | 880.7 | **873.0** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_50p` (50%) | 0.9756 | 1.89 / 2.39 | 1,357.9 | **1,359.1** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_10p` (10%) | 0.9638 | 1.12 / 1.27 | 3,620.2 | **3,939.2** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_5p` (5%) | 0.9596 | 1.00 / 1.11 | 4,592.9 | **5,293.8** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_1p` (1%) | 0.9418 | 0.87 / 0.96 | 6,480.8 | **7,254.9** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_0_1p` (0.1%) | 0.9780 | 1.71 / 2.14 | 2,300.1 | **2,305.6** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `int_range_1p` (1% (range)) | 0.9406 | 1.22 / 1.33 | 2,837.5 | **2,927.6** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `unfiltered_100p` (100%) | 0.8526 | 2.23 / 2.65 | 1,947.7 | **1,983.2** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `label_50p` (50%) | 0.8492 | 10.73 / 17.50 | 249.3 | **249.0** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `label_10p` (10%) | 0.8368 | 4.48 / 5.30 | 930.8 | **934.0** |
@@ -194,12 +194,12 @@
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `label_10p` | `{"num_candidates":250}` | 0.8492 | 4.33 / 5.94 | **928.8** |
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `label_1p` | `{"num_candidates":250}` | 0.7078 | 5.00 / 6.58 | **710.8** |
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `label_1p_nc1000` | `{"num_candidates":1000}` | 0.8164 | 17.38 / 22.95 | **203.5** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `unfiltered_100p` | `{"nprobe":36,"rerank_pool":256}` | 0.9838 | 3.37 / 4.26 | **554.4** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_10p` | `{"nprobe":36,"rerank_pool":256}` | 0.9756 | 1.45 / 1.62 | **2,193.6** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_1p` | `{"nprobe":36,"rerank_pool":256}` | 0.9634 | 1.09 / 1.17 | **4,691.2** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `unfiltered_100p` | `{"nprobe":36,"rerank_pool":256}` | 0.9838 | 3.35 / 4.30 | **561.9** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_10p` | `{"nprobe":36,"rerank_pool":256}` | 0.9756 | 1.44 / 1.63 | **2,199.2** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_1p` | `{"nprobe":36,"rerank_pool":256}` | 0.9634 | 1.10 / 1.23 | **4,695.9** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `unfiltered_100p` | `{"nprobe":36,"rerank_pool":256}` | 0.9848 | 2.96 / 3.72 | **589.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_10p` | `{"nprobe":36,"rerank_pool":256}` | 0.9748 | 1.28 / 1.42 | **2,799.4** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_1p` | `{"nprobe":36,"rerank_pool":256}` | 0.9696 | 0.98 / 1.08 | **5,805.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `unfiltered_100p` | `{"nprobe":36,"rerank_pool":256}` | 0.9844 | 2.96 / 3.71 | **601.4** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_10p` | `{"nprobe":36,"rerank_pool":256}` | 0.9764 | 1.25 / 1.41 | **2,785.0** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_1p` | `{"nprobe":36,"rerank_pool":256}` | 0.9654 | 0.97 / 1.08 | **5,690.2** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `unfiltered_100p` | `{"ef_search":250}` | 0.8948 | 38.77 / 59.53 | **790.6** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `label_10p` | `{"ef_search":250}` | 0.9118 | 116.31 / 192.88 | **41.0** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `label_1p` | `{"ef_search":250}` | 1.0000 | 215.09 / 308.79 | **21.5** |
@@ -220,9 +220,9 @@
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `label_10p` | `{"num_candidates":250}` | 0.8504 | 4.61 / 6.01 | **892.9** |
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `label_1p` | `{"num_candidates":250}` | 0.6982 | 5.18 / 6.92 | **685.1** |
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `label_1p_nc1000` | `{"num_candidates":1000}` | 0.8188 | 18.57 / 24.13 | **196.2** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `unfiltered_100p` | `{"nprobe":36,"rerank_pool":256}` | 0.9838 | 3.45 / 4.41 | **539.7** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_10p` | `{"nprobe":36,"rerank_pool":256}` | 0.9756 | 1.46 / 1.64 | **2,161.0** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_1p` | `{"nprobe":36,"rerank_pool":256}` | 0.9634 | 1.07 / 1.16 | **4,649.7** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `unfiltered_100p` | `{"nprobe":36,"rerank_pool":256}` | 0.9838 | 3.56 / 4.40 | **510.6** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_10p` | `{"nprobe":36,"rerank_pool":256}` | 0.9754 | 1.47 / 1.69 | **2,434.2** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_1p` | `{"nprobe":36,"rerank_pool":256}` | 0.9654 | 1.05 / 1.15 | **5,192.3** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `unfiltered_100p` | `{"ef_search":250}` | 0.8762 | 3.29 / 4.11 | **1,122.2** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `label_10p` | `{"ef_search":250}` | 0.8740 | 4.94 / 7.20 | **664.2** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `label_1p` | `{"ef_search":250}` | 0.7782 | 4.16 / 5.18 | **909.3** |
@@ -244,16 +244,16 @@
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `unfiltered_100p` | 0.8949 | 2.83 / 3.03 | **2,225.2** |
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `label_1p` | 0.6314 | 6.34 / 6.84 | **813.8** |
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | `int_range_1p` | 0.6157 | 6.12 / 6.62 | **832.8** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `unfiltered_100p` | 0.9769 | 3.43 / 3.69 | **770.0** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_1p` | 0.9027 | 1.30 / 1.45 | **5,471.5** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `int_range_1p` | 0.9022 | 2.03 / 2.77 | **589.8** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `unfiltered_100p_hi98` | 0.9831 | 4.81 / 5.11 | **462.9** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | `label_1p_hi98` | 0.9549 | 1.51 / 1.72 | **3,930.8** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `unfiltered_100p` | 0.9769 | 3.42 / 3.70 | **778.6** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_1p` | 0.9027 | 1.42 / 1.54 | **5,363.2** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `int_range_1p` | 0.9022 | 2.07 / 2.69 | **594.3** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `unfiltered_100p_hi98` | 0.9831 | 4.79 / 5.22 | **471.1** |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | `label_1p_hi98` | 0.9549 | 1.60 / 1.74 | **3,935.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `unfiltered_100p` | 0.9776 | 3.34 / 3.60 | **704.2** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_1p` | 0.9144 | 1.09 / 1.29 | **5,774.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `int_range_1p` | 0.9149 | 1.48 / 1.65 | **2,371.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `unfiltered_100p_hi98` | 0.9835 | 4.78 / 5.06 | **416.2** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | `label_1p_hi98` | 0.9617 | 1.26 / 1.45 | **4,241.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `unfiltered_100p` | 0.9769 | 3.39 / 3.74 | **711.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_1p` | 0.9152 | 1.11 / 1.33 | **5,811.0** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `int_range_1p` | 0.9115 | 1.47 / 1.60 | **2,356.5** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `unfiltered_100p_hi98` | 0.9834 | 4.69 / 5.10 | **422.8** |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | `label_1p_hi98` | 0.9628 | 1.28 / 1.49 | **4,160.5** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `unfiltered_100p` | 0.8903 | 52.51 / 65.17 | **420.8** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `label_1p` | 1.0000 | 376.94 / 958.42 | **24.3** |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | `int_range_1p` | 1.0000 | 342.54 / 422.59 | **17.4** |
@@ -266,11 +266,11 @@
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `unfiltered_100p` | 0.8939 | 2.92 / 3.07 | **2,198.6** |
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `label_1p` | 0.6239 | 6.62 / 7.19 | **778.5** |
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | `int_range_1p` | 0.6158 | 6.50 / 7.05 | **800.9** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `unfiltered_100p` | 0.9769 | 3.49 / 3.75 | **736.8** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_1p` | 0.9027 | 1.29 / 1.50 | **5,410.8** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `int_range_1p` | 0.9022 | 2.02 / 2.60 | **572.0** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `unfiltered_100p_hi98` | 0.9831 | 5.02 / 5.36 | **454.2** |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | `label_1p_hi98` | 0.9549 | 1.49 / 1.67 | **3,893.9** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `unfiltered_100p` | 0.9772 | 4.05 / 4.47 | **611.5** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_1p` | 0.9149 | 1.20 / 1.35 | **5,245.6** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `int_range_1p` | 0.9114 | 1.68 / 1.90 | **2,045.3** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `unfiltered_100p_hi98` | 0.9834 | 5.63 / 6.19 | **362.8** |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | `label_1p_hi98` | 0.9636 | 1.44 / 1.56 | **3,764.2** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `unfiltered_100p` | 0.8640 | 3.88 / 4.04 | **1,246.2** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `label_1p` | 1.0000 | 18.10 / 18.43 | **222.0** |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | `int_range_1p` | 1.0000 | 17.94 / 18.28 | **224.7** |
@@ -284,12 +284,12 @@
 |---|---:|---:|---:|---:|---:|
 | `16c32g_c6id.4xlarge_es_9.5.6_bbq_hnsw` | 1,003.7/s | 88.4 ms | **1,957.3 QPS** (14.15 ms) | **629.9 QPS** (39.17 ms) | 36 |
 | `16c32g_c6id.4xlarge_es_9.5.6_int8_hnsw` | 1,003.6/s | 106.1 ms | **2,143.0 QPS** (13.65 ms) | **867.4 QPS** (29.97 ms) | 43 |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_mem` | 1,004.0/s | 34.2 ms | **711.5 QPS** (39.74 ms) | **3,748.9 QPS** (6.67 ms) | 8 |
-| `16c32g_c6id.4xlarge_massengine_v0.9.21_nvme` | 1,004.0/s | 38.1 ms | **710.8 QPS** (40.01 ms) | **3,653.3 QPS** (6.97 ms) | 8 |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_mem` | 1,004.0/s | 37.2 ms | **728.3 QPS** (39.02 ms) | **4,015.7 QPS** (6.21 ms) | 8 |
+| `16c32g_c6id.4xlarge_massengine_v0.11.3_nvme` | 1,004.0/s | 40.0 ms | **744.3 QPS** (38.32 ms) | **3,844.4 QPS** (6.61 ms) | 8 |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_fp16` | 1,000.6/s | 225.7 ms | **793.3 QPS** (47.72 ms) | **9.8 QPS** (2051.81 ms) | 40 |
 | `16c32g_c6id.4xlarge_os_3.9.0_faiss_on_disk` | 1,003.1/s | 272.6 ms | **953.7 QPS** (28.53 ms) | **162.2 QPS** (147.48 ms) | 52 |
 | `16c64g_m6id.4xlarge_es_9.5.6_bbq_hnsw` | 1,003.6/s | 91.5 ms | **1,742.7 QPS** (15.06 ms) | **570.3 QPS** (42.42 ms) | 33 |
 | `16c64g_m6id.4xlarge_es_9.5.6_int8_hnsw` | 1,003.5/s | 99.9 ms | **2,145.5 QPS** (13.24 ms) | **840.0 QPS** (30.21 ms) | 49 |
-| `16c64g_m6id.4xlarge_massengine_v0.9.21_mem` | 1,004.0/s | 37.3 ms | **692.5 QPS** (40.67 ms) | **3,764.1 QPS** (6.68 ms) | 8 |
+| `16c64g_m6id.4xlarge_massengine_v0.11.3_mem` | 1,004.0/s | 40.3 ms | **606.4 QPS** (47.28 ms) | **3,544.7 QPS** (7.14 ms) | 8 |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_fp16` | 1,003.5/s | 262.4 ms | **1,129.1 QPS** (23.26 ms) | **933.1 QPS** (34.60 ms) | 46 |
 | `16c64g_m6id.4xlarge_os_3.9.0_faiss_on_disk` | 1,003.4/s | 277.7 ms | **974.9 QPS** (28.02 ms) | **162.2 QPS** (150.55 ms) | 32 |

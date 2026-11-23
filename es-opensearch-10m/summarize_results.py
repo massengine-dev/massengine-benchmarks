@@ -44,11 +44,23 @@ def main() -> None:
         lbl = r.get("label") or r["engine"]
         ing = r["ingest"]
         tel = r["telemetry"].get("post_optimize") or r["telemetry"].get("post_ingest") or {}
+        tel_stream = r["telemetry"].get("post_streaming") or {}
+        stream_anon = tel_stream.get("proc_rss_anon_bytes") or 0
+        if stream_anon:
+            stream_rss = tel_stream.get("proc_rss_bytes") or 0
+            rss_str = f"{fmt_gib(stream_anon)} heap ({fmt_gib(stream_rss)} mapped)"
+        else:
+            rss_bytes = tel.get("proc_rss_bytes") or 0
+            rss_anon = tel.get("proc_rss_anon_bytes") or 0
+            if rss_anon and rss_bytes > rss_anon * 1.5:
+                rss_str = f"{fmt_gib(rss_anon)} heap ({fmt_gib(rss_bytes)} mapped)"
+            else:
+                rss_str = fmt_gib(rss_bytes)
         lines.append(
             f"| `{lbl}` | {ing['searchable_wall_sec']:.1f}s ({ing['searchable_wall_sec']/60.0:.1f}m) "
             f"| {ing['optimize_forcemerge_wall_sec']:.1f}s ({ing['optimize_forcemerge_wall_sec']/60.0:.1f}m) "
             f"| **{ing['total_ready_merged_wall_sec']/60.0:.1f} min** ({ing['total_ready_merged_docs_per_sec']:,.0f} docs/s) "
-            f"| {fmt_gib(tel.get('proc_rss_bytes'))} "
+            f"| {rss_str} "
             f"| {fmt_gib(tel.get('page_cache_bytes'))} "
             f"| {fmt_gib(tel.get('nvme_data_bytes') or tel.get('store_bytes'))} |"
         )
