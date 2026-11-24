@@ -14,9 +14,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORK_DIR="${WORK_DIR:-$(pwd)/.vdbbench-work}"
 MASSENGINE_URL="${MASSENGINE_URL:-http://127.0.0.1:8080}"
 DB_LABEL="${DB_LABEL:-massengine-16c}"
-DB_VERSION="${DB_VERSION:-v0.11.3}"
+DB_VERSION="${DB_VERSION:-v0.11.8}"
 NUM_SHARDS="${NUM_SHARDS:-8}"
 RF="${RF:-1}"
+LOAD_CONCURRENCY="${LOAD_CONCURRENCY:-16}"
+CONCURRENCY_LIST="${CONCURRENCY_LIST:-1,5,10,20,30,40,60,80}"
 
 if [[ -z "${MASSENGINE_API_KEY:-}" ]]; then
   echo "ERROR: MASSENGINE_API_KEY is required." >&2
@@ -57,9 +59,9 @@ echo "--- [1/5] Performance768D10M (Cohere 10M Unfiltered) ---"
   --nprobe 52 \
   --rerank-pool 384 \
   --insert-batch-size 4096 \
-  --load-concurrency 16 \
+  --load-concurrency "${LOAD_CONCURRENCY}" \
   --concurrency-duration 30 \
-  --num-concurrency 1,5,10,20,30,40,60,80
+  --num-concurrency "${CONCURRENCY_LIST}"
 
 echo "--- [2/5] Performance768D10M1P (Cohere 10M 1% Int Filter, 99% Match) ---"
 "${VDB}" massengine \
@@ -77,7 +79,7 @@ echo "--- [2/5] Performance768D10M1P (Cohere 10M 1% Int Filter, 99% Match) ---"
   --nprobe 60 \
   --rerank-pool 384 \
   --concurrency-duration 30 \
-  --num-concurrency 1,5,10,20,30,40,60,80
+  --num-concurrency "${CONCURRENCY_LIST}"
 
 echo "--- [3/5] Performance768D10M99P (Cohere 10M 99% Int Filter, 1% Match) ---"
 "${VDB}" massengine \
@@ -95,7 +97,7 @@ echo "--- [3/5] Performance768D10M99P (Cohere 10M 99% Int Filter, 1% Match) ---"
   --nprobe 52 \
   --rerank-pool 384 \
   --concurrency-duration 30 \
-  --num-concurrency 1,5,10,20,30,40,60,80
+  --num-concurrency "${CONCURRENCY_LIST}"
 
 echo "--- [4/5] LabelFilterPerformanceCase (Cohere 10M 1.0% Scalar Label Filter) ---"
 "${VDB}" massengine \
@@ -113,9 +115,9 @@ echo "--- [4/5] LabelFilterPerformanceCase (Cohere 10M 1.0% Scalar Label Filter)
   --nprobe 60 \
   --rerank-pool 384 \
   --insert-batch-size 4096 \
-  --load-concurrency 16 \
+  --load-concurrency "${LOAD_CONCURRENCY}" \
   --concurrency-duration 30 \
-  --num-concurrency 1,5,10,20,30,40,60,80
+  --num-concurrency "${CONCURRENCY_LIST}"
 
 echo "--- [5/5] StreamingPerformanceCase (Cohere 100K Concurrent Read+Write @ 1,000 writes/s) ---"
 "${VDB}" massengine \

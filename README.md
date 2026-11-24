@@ -1,11 +1,68 @@
 # MassEngine Reproducible Benchmarks (`massengine-benchmarks`)
 
-Reproducible benchmark plugins, automated runner scripts, and unmodified raw JSON telemetry for [MassEngine](https://massengine.com) (`v0.11.3`).
+Reproducible benchmark plugins, automated cluster installers, evaluation runners, and unmodified raw JSON telemetry for [MassEngine](https://massengine.com) (`v0.11.2`–`v0.11.8`).
 
+- **8-Core 21-Day Free Evaluation & Benchmark Guide**: [https://massengine.com/docs-eval](https://massengine.com/docs-eval)
 - **Interactive Live 20M Wikipedia Demo (Zero Signup)**: [https://massengine.com/demo](https://massengine.com/demo)
 - **ES 9.5.6 & OpenSearch 3.9 FAISS (`Cohere-10M`) 3-Way Report**: [https://massengine.com/benchmarks-es-faiss](https://massengine.com/benchmarks-es-faiss)
 - **Full Cohere-10M & 144.1M AWS EC2 Report**: [https://massengine.com/benchmarks-144m](https://massengine.com/benchmarks-144m)
+- **Multimodal & CLIP Visual Embeddings (`CLIP ViT-B/32` & `Deep-Image-96` 10M)**: [https://massengine.com/benchmarks-multimodal](https://massengine.com/benchmarks-multimodal)
 - **OpenSearch 3.9 (`Lucene 10.5.1`) Selectivity Study**: [https://massengine.com/benchmarks](https://massengine.com/benchmarks)
+
+---
+
+## Quickstart: 8-Core 21-Day Free Evaluation Benchmark (`ME-EVAL-LAUNCH-21-DAYS`)
+
+Redeem promo code **`ME-EVAL-LAUNCH-21-DAYS`** in [massengine.com/console](https://massengine.com/console) for a free 21-day, 8-core floating license key (`meli_...`), then benchmark either a **Single 8-vCPU Node** or a **2-Node × 4-vCPU HA Cluster (`RF=2`)** (see [massengine.com/docs-eval](https://massengine.com/docs-eval) for AWS CloudFormation, GCP Terraform, Docker Compose, and bare-metal walkthroughs):
+
+### 1A. Option A — Single-Node 8-vCPU Setup (e.g., `c6id.2xlarge` / `m6id.2xlarge` / `c3d-standard-8`)
+```bash
+git clone https://github.com/massengine-dev/massengine-benchmarks.git
+cd massengine-benchmarks
+
+MASSENGINE_LICENSE_KEY="meli_your_8core_eval_key" \
+MASSENGINE_API_KEY="meadm_change_me_bench_token" \
+DIM=1024 DATA_DIR=/var/lib/massengine \
+./vectordbbench/install_server_node.sh
+```
+
+### 1B. Option B — 2-Node HA Setup (`2 × 4 vCPU` = 8 Cores, `RF=2` + Free Coordinator)
+```bash
+NODE_SECRET="$(openssl rand -hex 32)"
+
+# On Data Node 0 (10.0.0.11, 4 vCPUs):
+ROLE=node NODE_ID=0 NODES=2 RF=2 DIM=1024 NODE_SECRET="${NODE_SECRET}" \
+MASSENGINE_LICENSE_KEY="meli_your_8core_eval_key" \
+./vectordbbench/install_server_node.sh
+
+# On Data Node 1 (10.0.0.12, 4 vCPUs):
+ROLE=node NODE_ID=1 NODES=2 RF=2 DIM=1024 NODE_SECRET="${NODE_SECRET}" \
+MASSENGINE_LICENSE_KEY="meli_your_8core_eval_key" \
+./vectordbbench/install_server_node.sh
+
+# On Stateless Coordinator Host (consumes 0 licensed cores):
+ROLE=server NODES=2 RF=2 DIM=1024 NODE_SECRET="${NODE_SECRET}" \
+NODE_ADDRS="10.0.0.11:9410,10.0.0.12:9410" \
+MASSENGINE_LICENSE_KEY="meli_your_8core_eval_key" \
+MASSENGINE_API_KEY="meadm_change_me_bench_token" \
+./vectordbbench/install_server_node.sh
+```
+
+### 2. Run the Self-Contained 3-Minute Benchmark (+ Live HA Drain Test)
+```bash
+# Quick 100K-vector ingest, Recall@10, unfiltered / 1%-filtered / hybrid-BM25 sweep (+ HA drain check):
+python3 ./eval-8core/bench_eval_cluster.py \
+  --url http://127.0.0.1:8080 \
+  --api-key "meadm_change_me_bench_token" \
+  --vectors 100000 \
+  --verify-ha-drain \
+  --out eval_report_100k.json
+
+# Or run official upstream VectorDBBench (Cohere-1M 768-d; restart with DIM=768 first):
+MASSENGINE_URL="http://<GATEWAY_HOST>:8080" \
+MASSENGINE_API_KEY="meadm_change_me_bench_token" \
+./vectordbbench/run_cohere_1m_8core.sh
+```
 
 ---
 
@@ -64,7 +121,22 @@ Raw JSON telemetry reports: [`results/wikipedia-144m-aws/`](./results/wikipedia-
 
 ---
 
-## 3. Reproducing `Cohere-10M` (`VectorDBBench`) in Your Own VPC
+## 3. Multimodal & Visual Embeddings (`CLIP ViT-B/32` In-Dist / OOD & `Deep-Image-96` 10M)
+
+Evaluated with automatic zero-tuning vector partitioning across 1.28M ImageNet CLIP (`512-d`), 1.00M out-of-distribution text-to-image LAION-400M CLIP (`512-d`), and 9.99M `deep-image-96-angular` CNN descriptors (`96-d`), holding 10M vectors in **`0.877 GiB` RSS (`3.03 GiB` disk)** at `int8`:
+
+| Dataset (`N × Dim`) | Precision | Effective Load Rate | Process RSS / Disk | Unfiltered `Recall@10` (`p50`) | `1%` Filtered `Recall@10` / Peak QPS |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **`imagenet-clip-512`** (`1.28M × 512-d`) | `int8` / `float16` | `110,967/s` / `88,800/s` | `0.27 GiB` / `1.31–1.92 GiB` | `0.9829` / **`0.9957`** (`0.46 ms`) | `0.9910` / **`32,324 QPS`** (`0.28 ms` p50) |
+| **`laion-clip-512` (Text→Image OOD)** (`1.00M × 512-d`) | `int8` / `float16` | `120,038/s` / `102,265/s` | `0.26 GiB` / `1.28–1.76 GiB` | `0.9821` / **`0.9967`** (`0.48–3.4 ms`) | `0.9782` / **`33,494 QPS`** (`0.28 ms` p50) |
+| **`deep-image-96-angular`** (`9.99M × 96-d`) | `int8` / `float16` | `192,582/s` (`51.9s`) | **`0.88 GiB`** / `3.03–4.22 GiB` | `0.9729` / **`0.9984`** (`0.52–1.5 ms`) | `0.9857` / **`23,377 QPS`** (`0.36 ms` p50) |
+
+- Reproduction scripts: [`multimodal-image/stage_hdf5.py`](./multimodal-image/stage_hdf5.py) & [`multimodal-image/bench_multimodal_http.py`](./multimodal-image/bench_multimodal_http.py)
+- Unmodified raw JSON results: [`results/multimodal-image/`](./results/multimodal-image/)
+
+---
+
+## 4. Reproducing `Cohere-10M` (`VectorDBBench`) in Your Own VPC
 
 ### Step 0: Get a Multi-Core Evaluation License Key
 MassEngine includes a **1-Core Free Forever** tier (`≤ 1M` vectors) out of the box, and pins OS CPU affinity to the licensed vCPU count:
@@ -95,6 +167,7 @@ MASSENGINE_API_KEY="change-me-bench-token" \
 DB_LABEL="16c32g-nvme-c6id.4xlarge" \
 ./vectordbbench/run_cohere_10m.sh
 ```
+*(For an 8-core evaluation cluster, run `./vectordbbench/run_cohere_1m_8core.sh` or pass `LOAD_CONCURRENCY=8 CONCURRENCY_LIST=1,4,8,16,32` to `run_cohere_10m.sh`.)*
 
 ## License
 
