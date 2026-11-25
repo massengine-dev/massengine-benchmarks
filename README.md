@@ -1,7 +1,8 @@
 # MassEngine Reproducible Benchmarks (`massengine-benchmarks`)
 
-Reproducible benchmark plugins, automated cluster installers, evaluation runners, and unmodified raw JSON telemetry for [MassEngine](https://massengine.com) (`v0.11.2`–`v0.11.8`).
+Reproducible benchmark plugins, automated cluster installers, evaluation runners, and unmodified raw JSON telemetry for [MassEngine](https://massengine.com) (`v0.11.2`–`v0.11.9`).
 
+- **5-Minute Technical Walkthrough Video (MassEngine vs. HNSW, ES 9.5, OS FAISS, Qdrant & Milvus)**: [https://www.youtube.com/watch?v=fnZiKAPpn-A](https://www.youtube.com/watch?v=fnZiKAPpn-A)
 - **8-Core 21-Day Free Evaluation & Benchmark Guide**: [https://massengine.com/docs-eval](https://massengine.com/docs-eval)
 - **Interactive Live 20M Wikipedia Demo (Zero Signup)**: [https://massengine.com/demo](https://massengine.com/demo)
 - **ES 9.5.6 & OpenSearch 3.9 FAISS (`Cohere-10M`) 3-Way Report**: [https://massengine.com/benchmarks-es-faiss](https://massengine.com/benchmarks-es-faiss)
