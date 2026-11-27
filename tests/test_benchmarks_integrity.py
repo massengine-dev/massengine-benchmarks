@@ -1,9 +1,12 @@
+import importlib.util
 import json
+import math
 import os
 import subprocess
 import sys
 import tempfile
 import threading
+import types
 import unittest
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -35,6 +38,8 @@ class BenchmarkIntegrityTests(unittest.TestCase):
     def test_eval_8core_runner_against_mock_server(self) -> None:
         state_lock = threading.Lock()
         store: list[dict] = []
+        node0_drained = False
+        searches_while_drained = 0
         nodes_state = {
             "ready": True,
             "coordinator_version": "v0.11.8",
@@ -73,25 +78,53 @@ class BenchmarkIntegrityTests(unittest.TestCase):
                 self._send(200, {"deleted": True})
 
             def do_POST(self) -> None:
+                nonlocal node0_drained, searches_while_drained
                 ln = int(self.headers.get("Content-Length", "0"))
                 body = json.loads(self.rfile.read(ln).decode("utf-8")) if ln > 0 else {}
                 if self.path == "/v1/databases":
                     self._send(200, {"ok": True})
                 elif self.path == "/v1/ingest":
+                    docs = body.get("docs", [])
+                    for d in docs:
+                        dt = d.get("date")
+                        cat = d.get("category")
+                        vec = d.get("vector")
+                        if (
+                            isinstance(dt, bool)
+                            or not isinstance(dt, int)
+                            or not (0 <= dt <= 65535)
+                            or isinstance(cat, bool)
+                            or not isinstance(cat, int)
+                            or not (0 <= cat <= 65535)
+                            or not isinstance(vec, list)
+                            or len(vec) != 32
+                            or not all(
+                                isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
+                                for x in vec
+                            )
+                        ):
+                            self._send(400, {"error": "invalid doc date/category uint16 or vector schema"})
+                            return
                     with state_lock:
-                        store.extend(body.get("docs", []))
-                    self._send(200, {"ingested": len(body.get("docs", []))})
+                        store.extend(docs)
+                    self._send(200, {"ingested": len(docs)})
                 elif self.path in ("/v1/flush", "/v1/compact", "/v1/reconcile"):
                     self._send(200, {"ok": True, "repaired_replicas": 0})
                 elif self.path == "/v1/nodes/0/drain":
+                    with state_lock:
+                        node0_drained = True
                     self._send(200, {"drained": True})
                 elif self.path == "/v1/nodes/0/uncordon":
+                    with state_lock:
+                        node0_drained = False
                     self._send(200, {"uncordoned": True})
                 elif self.path == "/v1/search":
                     q = body.get("vector", [])
                     cat = body.get("category")
                     k = int(body.get("k", 10))
                     with state_lock:
+                        if node0_drained:
+                            searches_while_drained += 1
                         snapshot = list(store)
                     scored = []
                     for d in snapshot:
@@ -147,11 +180,143 @@ class BenchmarkIntegrityTests(unittest.TestCase):
                 self.assertEqual(rep["vectors"], 120)
                 self.assertGreaterEqual(rep["search_unfiltered"]["recall_at_10"], 0.99)
                 self.assertGreaterEqual(rep["search_filtered_1pct"]["recall_at_10"], 0.99)
+                self.assertGreater(searches_while_drained, 0)
+                self.assertGreater(rep["ha_drain_verification"]["queries_during_drain"], 0)
                 self.assertEqual(rep["ha_drain_verification"]["queries_failed"], 0)
                 self.assertTrue(rep["ha_drain_verification"]["cluster_healthy_after"])
         finally:
             srv.shutdown()
             srv.server_close()
+
+    def test_vectordbbench_binary_wire_and_helpers(self) -> None:
+        stub_names = [
+            "numpy",
+            "urllib3",
+            "vectordb_bench",
+            "vectordb_bench.backend",
+            "vectordb_bench.backend.filter",
+            "vectordb_bench.backend.payload",
+            "vectordbbench",
+            "vectordbbench.api",
+            "vectordbbench.massengine",
+            "vectordbbench.massengine.config",
+            "vectordbbench.massengine.massengine",
+        ]
+        saved = {name: sys.modules.get(name) for name in stub_names}
+        try:
+            np_mod = types.ModuleType("numpy")
+            sys.modules["numpy"] = np_mod
+
+            u3_mod = types.ModuleType("urllib3")
+            u3_mod.PoolManager = object
+            u3_mod.Timeout = object
+            sys.modules["urllib3"] = u3_mod
+
+            vdb_mod = types.ModuleType("vectordb_bench")
+            vdb_backend = types.ModuleType("vectordb_bench.backend")
+            vdb_filter = types.ModuleType("vectordb_bench.backend.filter")
+            vdb_payload = types.ModuleType("vectordb_bench.backend.payload")
+
+            class Filter:
+                pass
+
+            class FilterOp:
+                NonFilter = "NonFilter"
+                NumGE = "NumGE"
+                StrEqual = "StrEqual"
+
+            class PayloadProfile:
+                IDS_ONLY = "IDS_ONLY"
+                FULL = "FULL"
+
+            vdb_filter.Filter = Filter
+            vdb_filter.FilterOp = FilterOp
+            vdb_payload.PayloadProfile = PayloadProfile
+            sys.modules["vectordb_bench"] = vdb_mod
+            sys.modules["vectordb_bench.backend"] = vdb_backend
+            sys.modules["vectordb_bench.backend.filter"] = vdb_filter
+            sys.modules["vectordb_bench.backend.payload"] = vdb_payload
+
+            pkg_root = types.ModuleType("vectordbbench")
+            pkg_root.__path__ = [str(ROOT / "vectordbbench")]
+            pkg_api = types.ModuleType("vectordbbench.api")
+
+            class VectorDB:
+                pass
+
+            pkg_api.VectorDB = VectorDB
+            pkg_me = types.ModuleType("vectordbbench.massengine")
+            pkg_me.__path__ = [str(ROOT / "vectordbbench" / "massengine")]
+            pkg_cfg = types.ModuleType("vectordbbench.massengine.config")
+
+            class MassEngineIndexConfig:
+                def index_param(self) -> dict:
+                    return {}
+
+                def search_param(self) -> dict:
+                    return {}
+
+            pkg_cfg.MassEngineIndexConfig = MassEngineIndexConfig
+            sys.modules["vectordbbench"] = pkg_root
+            sys.modules["vectordbbench.api"] = pkg_api
+            sys.modules["vectordbbench.massengine"] = pkg_me
+            sys.modules["vectordbbench.massengine.config"] = pkg_cfg
+
+            mod_path = ROOT / "vectordbbench" / "massengine" / "massengine.py"
+            spec = importlib.util.spec_from_file_location("vectordbbench.massengine.massengine", mod_path)
+            assert spec is not None and spec.loader is not None
+            mod = importlib.util.module_from_spec(spec)
+            sys.modules["vectordbbench.massengine.massengine"] = mod
+            spec.loader.exec_module(mod)
+
+            # 1. Helper identifiers & category hashing
+            self.assertEqual(mod._sanitize_identifier("   "), "vdbbench")
+            self.assertEqual(mod._sanitize_identifier("-foo bar!"), "c-foo_bar_")
+            self.assertEqual(len(mod._sanitize_identifier("a" * 80)), 63)
+            self.assertEqual(mod._encode_label_category(""), 0)
+            cat = mod._encode_label_category("science")
+            self.assertTrue(1 <= cat <= 65534)
+
+            # 2. Wire struct sizes
+            self.assertEqual(mod._MEB1_HEADER_STRUCT.size, 18)
+            self.assertEqual(mod._MES1_HEADER_STRUCT.size, 32)
+            self.assertEqual(mod._MESR_HEADER_STRUCT.size, 16)
+            self.assertEqual(mod._MESB_HEADER_STRUCT.size, 12)
+
+            # 3. _pack_mes1_frame with filters & without filters
+            inst = mod.MassEngine.__new__(mod.MassEngine)
+            inst.name = "MassEngine"
+            inst._tenant_bytes = b"acme"
+            inst._db_bytes = b"cohere"
+            inst.nprobe = 24
+            inst.rerank_pool = 64
+            inst._filter_category = None
+            inst._filter_min_doc_id = None
+
+            vec_bytes = b"\x00\x00\x80?\x00\x00\x00@"  # [1.0, 2.0]
+            f_plain = inst._pack_mes1_frame(vec_bytes, 2, 10)
+            magic, flags, t_len, d_len, rsv, dim, k, np_v, rp_v, off = mod._MES1_HEADER_STRUCT.unpack_from(f_plain, 0)
+            self.assertEqual(magic, b"MES1")
+            self.assertEqual(flags, (1 << 0) | (1 << 1) | (1 << 8))
+            self.assertEqual((t_len, d_len, rsv, dim, k, np_v, rp_v, off), (4, 6, 0, 2, 10, 24, 64, 0))
+            self.assertEqual(f_plain[32:], b"acmecohere" + vec_bytes)
+
+            inst._filter_category = 77
+            inst._filter_min_doc_id = 123456
+            f_filt = inst._pack_mes1_frame(vec_bytes, 2, 10)
+            _, flags2, *_ = mod._MES1_HEADER_STRUCT.unpack_from(f_filt, 0)
+            self.assertEqual(flags2, (1 << 0) | (1 << 1) | (1 << 8) | (1 << 4) | (1 << 5))
+            tail_off = 32 + 4 + 6 + len(vec_bytes)
+            (got_cat,) = mod._U16_STRUCT.unpack_from(f_filt, tail_off)
+            (got_min_id,) = mod._U64_STRUCT.unpack_from(f_filt, tail_off + 2)
+            self.assertEqual(got_cat, 77)
+            self.assertEqual(got_min_id, 123456)
+        finally:
+            for name, prev in saved.items():
+                if prev is None:
+                    sys.modules.pop(name, None)
+                else:
+                    sys.modules[name] = prev
 
     def test_multimodal_image_results(self) -> None:
         base = ROOT / "results" / "multimodal-image"

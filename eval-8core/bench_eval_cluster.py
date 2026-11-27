@@ -293,14 +293,16 @@ def verify_ha_drain(
 ) -> dict[str, Any]:
     """Drain node-0 while running live traffic, verify 0 errors, then uncordon + reconcile."""
     stop_flag = threading.Event()
+    in_drain = threading.Event()
     total_ok = 0
     total_err = 0
+    during_drain_ok = 0
     count_lock = threading.Lock()
 
     def _traffic() -> None:
-        nonlocal total_ok, total_err
+        nonlocal total_ok, total_err, during_drain_ok
         seq = 0
-        while not stop_flag.is_set() and (total_ok + total_err) < 400:
+        while not stop_flag.is_set():
             qvec = queries[seq % len(queries)]
             seq += 1
             try:
@@ -321,9 +323,12 @@ def verify_ha_drain(
                 )
                 with count_lock:
                     total_ok += 1
+                    if in_drain.is_set():
+                        during_drain_ok += 1
             except Exception:
                 with count_lock:
                     total_err += 1
+            time.sleep(0.001)
 
     workers = [threading.Thread(target=_traffic, daemon=True) for _ in range(4)]
     for t in workers:
@@ -331,7 +336,9 @@ def verify_ha_drain(
 
     time.sleep(0.15)
     drain_resp = api_json(base_url, api_key, "POST", "/v1/nodes/0/drain", {})
+    in_drain.set()
     time.sleep(0.4)
+    in_drain.clear()
     uncordon_resp = api_json(base_url, api_key, "POST", "/v1/nodes/0/uncordon", {})
     reconcile_resp = api_json(base_url, api_key, "POST", "/v1/reconcile", {})
 
@@ -349,6 +356,7 @@ def verify_ha_drain(
         "uncordoned": bool(uncordon_resp.get("uncordoned")),
         "repaired_replicas": int(reconcile_resp.get("repaired_replicas", 0)),
         "queries_succeeded": total_ok,
+        "queries_during_drain": during_drain_ok,
         "queries_failed": total_err,
         "cluster_healthy_after": all_healthy,
     }
@@ -423,6 +431,7 @@ def main() -> int:
     )
 
     # Parallel batch ingest
+    epoch_day = max(1, min(65535, int(time.time() // 86400)))
     batches: list[list[dict[str, Any]]] = []
     for start in range(0, args.vectors, args.batch_size):
         end = min(start + args.batch_size, args.vectors)
@@ -430,7 +439,7 @@ def main() -> int:
             {
                 "id": f"eval-{i + 1}",
                 "category": (i % 100) + 1,
-                "date": 20260101,
+                "date": epoch_day,
                 "vector": vecs[i],
                 "metadata": {
                     "env": "prod" if i % 2 == 0 else "staging",
